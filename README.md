@@ -1,15 +1,11 @@
-# Домашняя библиотека
+# Приложение для зачета по ООП
 
-Небольшое приложение на Flet для учета прочитанных книг и журналов.
-
-## Установка зависимостей
-
-```bash
-pip install -r requirements.txt
-```
+Домашняя библиотека
 
 ## Запуск
 
 ```bash
+git clone https://github.com/iamatyash/mti-flet-app
+pip install -r requirements.txt
 python main.py
 ```
