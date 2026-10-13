@@ -3,10 +3,12 @@ from datetime import datetime
 
 
 class BaseItem(ABC):
+    """Абстрактный базовый класс для сущностей домашней библиотеки."""
+
     def __init__(self, name, author, pages, done=False):
         self._name = str(name)
         self._author = str(author)
-        self._pages = int(pages)
+        self._pages = max(1, int(pages))
         self._done = bool(done)
 
     @property
@@ -15,7 +17,7 @@ class BaseItem(ABC):
 
     @name.setter
     def name(self, val):
-        self._name = str(val)
+        self._name = str(val).strip()
 
     @property
     def author(self):
@@ -23,7 +25,7 @@ class BaseItem(ABC):
 
     @author.setter
     def author(self, val):
-        self._author = str(val)
+        self._author = str(val).strip()
 
     @property
     def pages(self):
@@ -43,50 +45,72 @@ class BaseItem(ABC):
 
     @abstractmethod
     def get_info(self):
+        """Возвращает форматированную строку с описанием объекта."""
         pass
 
     @staticmethod
     def check_pages(val):
-        return str(val).isdigit() and int(val) > 0
+        """Проверка корректности введенного количества страниц."""
+        try:
+            return int(val) > 0
+        except (ValueError, TypeError):
+            return False
 
+    # Специальные методы: __eq__, __repr__, __str__ (по ТЗ)
     def __eq__(self, other):
         if not isinstance(other, BaseItem):
             return False
         return self._name == other._name and self._pages == other._pages
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({self._name}, {self._pages})"
+        return f"{self.__class__.__name__}(name='{self._name}', author='{self._author}', pages={self._pages})"
 
     def __str__(self):
         status = "Прочитано" if self._done else "Не прочитано"
-        return f"{self._name} - {self._author} ({self._pages} стр.) [{status}]"
+        return f"{self._name} — {self._author} ({self._pages} стр.) [{status}]"
 
+    # Сравнение объектов (по ТЗ: пользовательские классы должны быть сравнимы)
     def __lt__(self, other):
+        if not isinstance(other, BaseItem):
+            return NotImplemented
         return self._pages < other._pages
 
     def __le__(self, other):
+        if not isinstance(other, BaseItem):
+            return NotImplemented
         return self._pages <= other._pages
 
     def __gt__(self, other):
+        if not isinstance(other, BaseItem):
+            return NotImplemented
         return self._pages > other._pages
 
     def __ge__(self, other):
+        if not isinstance(other, BaseItem):
+            return NotImplemented
         return self._pages >= other._pages
 
+    # Дополнительные специальные методы (не менее 3 по ТЗ)
     def __len__(self):
         return self._pages
 
     def __add__(self, other):
-        return self._pages + other._pages
+        if isinstance(other, BaseItem):
+            return self._pages + other._pages
+        if isinstance(other, int):
+            return self._pages + other
+        return NotImplemented
 
     def __bool__(self):
         return self._done
 
     def __hash__(self):
-        return hash((self._name, self._author))
+        return hash((self._name, self._author, self._pages))
 
 
 class Book(BaseItem):
+    """Класс книги."""
+
     def __init__(self, name, author, pages, genre="Роман", done=False):
         super().__init__(name, author, pages, done)
         self._genre = str(genre)
@@ -97,13 +121,15 @@ class Book(BaseItem):
 
     @genre.setter
     def genre(self, val):
-        self._genre = str(val)
+        self._genre = str(val).strip()
 
     def get_info(self):
         return f"Книга | {self._name} — {self._author} | {self._genre} | {self._pages} стр."
 
 
 class Journal(BaseItem):
+    """Класс периодического издания / журнала."""
+
     def __init__(self, name, author, pages, num="№1", done=False):
         super().__init__(name, author, pages, done)
         self._num = str(num)
@@ -114,69 +140,86 @@ class Journal(BaseItem):
 
     @num.setter
     def num(self, val):
-        self._num = str(val)
+        self._num = str(val).strip()
 
     def get_info(self):
         return f"Журнал | {self._name} ({self._num}) — {self._author} | {self._pages} стр."
 
 
-class MyMap(BaseItem):
+class MyMap:
+    """
+    Кастомный класс для маппинга данных без использования стандартного dict.
+    Реализует хранение пар ключ-значение на двух списках.
+    """
+
     def __init__(self):
-        super().__init__("map", "system", 1, True)
         self._keys = []
         self._vals = []
 
     @property
     def keys(self):
-        return self._keys
-
-    @keys.setter
-    def keys(self, val):
-        self._keys = list(val)
+        return list(self._keys)
 
     @property
-    def vals(self):
-        return self._vals
+    def values(self):
+        return list(self._vals)
 
-    @vals.setter
-    def vals(self, val):
-        self._vals = list(val)
-
-    def get_info(self):
-        return f"Записей: {len(self._keys)}"
-
-    def put(self, k, v):
-        if k in self._keys:
-            idx = self._keys.index(k)
-            self._vals[idx] = v
+    def put(self, key, value):
+        if key in self._keys:
+            idx = self._keys.index(key)
+            self._vals[idx] = value
         else:
-            self._keys.append(k)
-            self._vals.append(v)
+            self._keys.append(key)
+            self._vals.append(value)
 
-    def get(self, k, default=None):
-        if k in self._keys:
-            idx = self._keys.index(k)
+    def get(self, key, default=None):
+        if key in self._keys:
+            idx = self._keys.index(key)
             return self._vals[idx]
         return default
 
-    def __getitem__(self, k):
-        return self.get(k)
+    def remove(self, key):
+        if key in self._keys:
+            idx = self._keys.index(key)
+            self._keys.pop(idx)
+            self._vals.pop(idx)
 
-    def __setitem__(self, k, v):
-        self.put(k, v)
+    # Специальные методы
+    def __getitem__(self, key):
+        if key in self._keys:
+            return self.get(key)
+        raise KeyError(key)
+
+    def __setitem__(self, key, value):
+        self.put(key, value)
 
     def __len__(self):
         return len(self._keys)
 
+    def __contains__(self, key):
+        return key in self._keys
 
-class Session(BaseItem):
-    FMT = "%d.%m.%Y %H:%M:%S"
+    def __repr__(self):
+        items_str = ", ".join(f"{k!r}: {v!r}" for k, v in zip(self._keys, self._vals))
+        return f"MyMap({{{items_str}}})"
+
+    def __str__(self):
+        return self.__repr__()
+
+
+class Session:
+    """Класс сессии пользователя для формирования итогового отчета."""
+
+    DATETIME_FORMAT = "%d.%m.%Y %H:%M:%S"
 
     def __init__(self, login="UserName"):
-        super().__init__(login, "user", 1, True)
-        self._login = login
-        self._time_in = datetime.now().strftime(self.FMT)
-        self._time_out = datetime.now().strftime(self.FMT)
+        self._login = str(login).strip() or "UserName"
+        self._time_in = self.now_formatted()
+        self._time_out = self.now_formatted()
+
+    @staticmethod
+    def now_formatted():
+        return datetime.now().strftime(Session.DATETIME_FORMAT)
 
     @property
     def login(self):
@@ -206,11 +249,18 @@ class Session(BaseItem):
         return f"{self._login}: {self._time_in} - {self._time_out}"
 
     def save(self, filename="report.txt"):
-        self._time_out = datetime.now().strftime(self.FMT)
+        """Формирует отчет в заданном табличном формате и сохраняет в файл."""
+        self._time_out = self.now_formatted()
         line = "+------------------------------------------------------+"
-        head = f"| {'login':<9}| {'time_in':<20}| {'time_out':<20}|"
-        sep = "|----------|---------------------|---------------------|"
-        row = f"|{self._login:<10}| {self._time_in:<20}| {self._time_out:<20}|"
+        head = f"| {'login':<10}| {'time_in':<20}| {'time_out':<20}|"
+        sep  = "|-----------|---------------------|---------------------|"
+        row  = f"| {self._login:<10}| {self._time_in:<20}| {self._time_out:<20}|"
         text = "\n".join([line, head, sep, row, line]) + "\n"
         with open(filename, "w", encoding="utf-8") as f:
             f.write(text)
+
+    def __repr__(self):
+        return f"Session(login='{self._login}', time_in='{self._time_in}', time_out='{self._time_out}')"
+
+    def __str__(self):
+        return self.get_info()
