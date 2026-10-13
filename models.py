@@ -61,7 +61,7 @@ class BaseItem(ABC):
 
     def __str__(self):
         status = "Прочитано" if self._done else "Не прочитано"
-        return f"{self._name} — {self._author} ({self._pages} стр.) [{status}]"
+        return f"{self._name} | {self._author} ({self._pages} стр.) [{status}]"
 
     def __lt__(self, other):
         if not isinstance(other, BaseItem):
@@ -114,7 +114,7 @@ class Book(BaseItem):
         self._genre = str(val).strip()
 
     def get_info(self):
-        return f"Книга | {self._name} — {self._author} | {self._genre} | {self._pages} стр."
+        return f"Книга | {self._name} | {self._author} | {self._genre} | {self._pages} стр."
 
 
 class Journal(BaseItem):
@@ -131,4 +131,4 @@ class Journal(BaseItem):
         self._num = str(val).strip()
 
     def get_info(self):
-        return f"Журнал | {self._name} ({self._num}) — {self._author} | {self._pages} стр."
+        return f"Журнал | {self._name} ({self._num}) | {self._author} | {self._pages} стр."

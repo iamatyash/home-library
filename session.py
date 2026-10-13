@@ -38,7 +38,7 @@ class Session:
         self._time_out = str(val)
 
     def get_info(self):
-        return f"{self._login}: {self._time_in} - {self._time_out}"
+        return f"{self._login} | {self._time_in} | {self._time_out}"
 
     def save(self, filename="report.txt"):
         self._time_out = self.now_formatted()
