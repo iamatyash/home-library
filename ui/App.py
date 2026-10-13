@@ -1,5 +1,5 @@
 import flet as ft
-from util.Constants import C_ORANGE, C_CYAN, C_GREEN, C_DARK, C_BG
+from util.Constants import C_BG, C_CARD, C_BORDER, C_ACCENT, C_TEXT
 from model.Book import Book
 from model.Journal import Journal
 from storage.CustomMap import CustomMap
@@ -49,7 +49,7 @@ class App:
 
     def setup_window(self):
         self.page.title = "Домашняя библиотека"
-        self.page.theme_mode = ft.ThemeMode.LIGHT
+        self.page.theme_mode = ft.ThemeMode.DARK
         self.page.bgcolor = C_BG
         self.page.padding = 20
         self.page.spacing = 12
@@ -63,31 +63,45 @@ class App:
         self.page.window.resizable = True
         self.page.window.on_event = self.on_win_event
 
+    def box_field(self, title, control):
+        return FlexColumn([BodyText(title, size=12, weight=ft.FontWeight.W_500, color=C_ACCENT), control], spacing=4)
+
     def build_ui(self):
         self.title_lbl = AppTitle("Домашняя библиотека")
-        self.login_inp = InputField("Логин", 180, "UserName", self.on_login_change)
+        self.login_inp = InputField("UserName", 180, "UserName", self.on_login_change)
 
-        self.type_drop = SelectDropdown("Тип", ("Книга", "Журнал"), "Книга")
-        self.name_inp = InputField("Название", 180)
-        self.author_inp = InputField("Автор", 150)
-        self.pages_inp = InputField("Страниц", 90, "300")
-        self.extra_inp = InputField("Жанр / Номер", 140, "Роман")
-        self.add_btn = ActionButton("Добавить", self.add_item, bg=C_ORANGE, fg="#FFFFFF")
+        self.type_drop = SelectDropdown(("Книга", "Журнал"), "Книга", 130)
+        self.name_inp = InputField("Введите название", 180)
+        self.author_inp = InputField("Имя автора", 150)
+        self.pages_inp = InputField("300", 90, "300")
+        self.extra_inp = InputField("Роман / №1", 140, "Роман")
+        self.add_btn = ActionButton("Добавить", self.add_item, bg=C_ACCENT, fg="#FFFFFF")
         self.done_chk = StatusCheckbox("Прочитано", False)
 
-        self.filter_drop = SelectDropdown("Фильтр", self.types, "Все", self.refresh)
-        self.sort_btn = ActionButton("Сортировать по стр.", self.sort_items, bg=C_CYAN, fg="#1E293B")
-        self.cmp_btn = ActionButton("Сравнить 2 первых", self.compare_items, bg=C_GREEN, fg="#1E293B")
-        self.info_lbl = BodyText("", color=C_ORANGE)
+        self.filter_drop = SelectDropdown(self.types, "Все", 130, self.refresh)
+        self.sort_btn = ActionButton("Сортировать по стр.", self.sort_items, bg=C_BORDER, fg="#FFFFFF")
+        self.cmp_btn = ActionButton("Сравнить 2 первых", self.compare_items, bg=C_BORDER, fg="#FFFFFF")
+        self.info_lbl = BodyText("", color=C_ACCENT)
 
         self.list_col = FlexColumn([])
-        self.stats_lbl = BodyText("", color=C_DARK)
+        self.stats_lbl = BodyText("", color=C_TEXT)
         self.prog_bar = AppProgressBar(0)
 
-        top_row = FlexRow([self.title_lbl, self.login_inp])
-        add_row1 = FlexRow([self.type_drop, self.name_inp, self.author_inp, self.pages_inp, self.extra_inp])
+        top_row = FlexRow([self.title_lbl, self.box_field("Логин", self.login_inp)], vertical_alignment=ft.CrossAxisAlignment.END)
+        add_row1 = FlexRow([
+            self.box_field("Тип", self.type_drop),
+            self.box_field("Название", self.name_inp),
+            self.box_field("Автор", self.author_inp),
+            self.box_field("Страниц", self.pages_inp),
+            self.box_field("Жанр / Номер", self.extra_inp),
+        ])
         add_row2 = FlexRow([self.add_btn, self.done_chk])
-        ctrl_row = FlexRow([self.filter_drop, self.sort_btn, self.cmp_btn, self.info_lbl])
+        ctrl_row = FlexRow([
+            self.box_field("Фильтр", self.filter_drop),
+            self.sort_btn,
+            self.cmp_btn,
+            self.info_lbl,
+        ], vertical_alignment=ft.CrossAxisAlignment.END)
         bot_row = FlexRow([self.stats_lbl, self.prog_bar])
 
         self.page.add(
@@ -164,8 +178,8 @@ class App:
                 continue
 
             chk = StatusCheckbox("", item.done, self.toggle_item, item)
-            txt = BodyText(item.get_info(), 520, color=C_DARK)
-            del_btn = ActionButton("Удалить", self.delete_item, item, bg="#FFF0E6", fg=C_ORANGE)
+            txt = BodyText(item.get_info(), 520, color=C_TEXT)
+            del_btn = ActionButton("Удалить", self.delete_item, item, bg=C_BG, fg=C_ACCENT)
             row = CardContainer(FlexRow([chk, txt, del_btn]))
             self.list_col.controls.append(row)
 
