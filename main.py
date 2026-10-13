@@ -1,36 +1,69 @@
 import flet as ft
 from models import Book, Journal, MyMap, Session
 
+C_ORANGE = "#FF9D50"
+C_CREAM = "#FFF9D8"
+C_CYAN = "#1DCED8"
+C_GREEN = "#55E07E"
+
 
 class AppTitle(ft.Text):
     def __init__(self, text):
-        super().__init__(value=text, size=22, weight=ft.FontWeight.BOLD)
+        super().__init__(value=text, size=22, weight=ft.FontWeight.BOLD, color=C_ORANGE)
 
 
 class BodyText(ft.Text):
-    def __init__(self, text="", w=None):
-        super().__init__(value=text, size=14, width=w)
+    def __init__(self, text="", w=None, color=C_CREAM):
+        super().__init__(value=text, size=14, width=w, color=color)
 
 
 class InputField(ft.TextField):
     def __init__(self, label, w=180, val="", change=None):
-        super().__init__(label=label, width=w, value=val, on_change=change)
+        super().__init__(
+            label=label,
+            width=w,
+            value=val,
+            on_change=change,
+            border_color=C_CYAN,
+            focused_border_color=C_ORANGE,
+            cursor_color=C_ORANGE,
+            color=C_CREAM,
+            label_style=ft.TextStyle(color=C_CREAM),
+        )
 
 
 class ActionButton(ft.Button):
-    def __init__(self, text, click, data=None):
-        super().__init__(content=text, on_click=click, data=data)
+    def __init__(self, text, click, data=None, bg=C_ORANGE, fg="#121212"):
+        super().__init__(content=text, on_click=click, data=data, bgcolor=bg, color=fg)
 
 
 class StatusCheckbox(ft.Checkbox):
     def __init__(self, label, val=False, change=None, data=None):
-        super().__init__(label=label, value=val, on_change=change, data=data)
+        super().__init__(
+            label=label,
+            value=val,
+            on_change=change,
+            data=data,
+            active_color=C_GREEN,
+            check_color="#121212",
+            label_style=ft.TextStyle(color=C_CREAM),
+        )
 
 
 class SelectDropdown(ft.Dropdown):
     def __init__(self, label, items, val, change=None):
         opts = [ft.DropdownOption(x) for x in items]
-        super().__init__(label=label, width=150, value=val, options=opts, on_select=change)
+        super().__init__(
+            label=label,
+            width=150,
+            value=val,
+            options=opts,
+            on_select=change,
+            border_color=C_CYAN,
+            focused_border_color=C_ORANGE,
+            color=C_CREAM,
+            label_style=ft.TextStyle(color=C_CREAM),
+        )
 
 
 class FlexRow(ft.Row):
@@ -65,12 +98,12 @@ class CardContainer(ft.Container):
 
 class AppProgressBar(ft.ProgressBar):
     def __init__(self, val=0.0):
-        super().__init__(value=val, width=250)
+        super().__init__(value=val, width=250, color=C_GREEN, bgcolor="#2A2A2A")
 
 
 class AppDivider(ft.Divider):
     def __init__(self):
-        super().__init__(height=1, color="#2E2E2E")
+        super().__init__(height=1, color=C_CYAN)
 
 
 class App:
@@ -127,15 +160,15 @@ class App:
         self.pages_inp = InputField("Страниц", 100, "300")
         self.extra_inp = InputField("Жанр / Номер", 150, "Роман")
         self.done_chk = StatusCheckbox("Прочитано", False)
-        self.add_btn = ActionButton("Добавить", self.add_item)
+        self.add_btn = ActionButton("Добавить", self.add_item, bg=C_ORANGE, fg="#121212")
 
         self.filter_drop = SelectDropdown("Фильтр", self.types, "Все", self.refresh)
-        self.sort_btn = ActionButton("Сортировать по стр.", self.sort_items)
-        self.cmp_btn = ActionButton("Сравнить 2 первых", self.compare_items)
-        self.info_lbl = BodyText("")
+        self.sort_btn = ActionButton("Сортировать по стр.", self.sort_items, bg=C_CYAN, fg="#121212")
+        self.cmp_btn = ActionButton("Сравнить 2 первых", self.compare_items, bg=C_GREEN, fg="#121212")
+        self.info_lbl = BodyText("", color=C_CYAN)
 
         self.list_col = FlexColumn([])
-        self.stats_lbl = BodyText("")
+        self.stats_lbl = BodyText("", color=C_CREAM)
         self.prog_bar = AppProgressBar(0)
 
         top_row = FlexRow([self.title_lbl, self.login_inp])
@@ -218,8 +251,8 @@ class App:
                 continue
 
             chk = StatusCheckbox("", item.done, self.toggle_item, item)
-            txt = BodyText(item.get_info(), 520)
-            del_btn = ActionButton("Удалить", self.delete_item, item)
+            txt = BodyText(item.get_info(), 520, color=C_CREAM)
+            del_btn = ActionButton("Удалить", self.delete_item, item, bg="#2A201A", fg=C_ORANGE)
             row = CardContainer(FlexRow([chk, txt, del_btn]))
             self.list_col.controls.append(row)
 
