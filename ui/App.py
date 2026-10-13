@@ -1,9 +1,10 @@
 import flet as ft
-from constants import C_ORANGE, C_CYAN, C_GREEN, C_DARK, C_BG
-from models import Book, Journal
-from storage import MyMap
-from session import Session
-from components import (
+from util.Constants import C_ORANGE, C_CYAN, C_GREEN, C_DARK, C_BG
+from model.Book import Book
+from model.Journal import Journal
+from storage.MyMap import MyMap
+from service.Session import Session
+from ui.Components import (
     AppTitle,
     BodyText,
     InputField,

@@ -98,37 +98,3 @@ class BaseItem(ABC):
 
     def __hash__(self):
         return hash((self._name, self._author, self._pages))
-
-
-class Book(BaseItem):
-    def __init__(self, name, author, pages, genre="Роман", done=False):
-        super().__init__(name, author, pages, done)
-        self._genre = str(genre)
-
-    @property
-    def genre(self):
-        return self._genre
-
-    @genre.setter
-    def genre(self, val):
-        self._genre = str(val).strip()
-
-    def get_info(self):
-        return f"Книга | {self._name} | {self._author} | {self._genre} | {self._pages} стр."
-
-
-class Journal(BaseItem):
-    def __init__(self, name, author, pages, num="№1", done=False):
-        super().__init__(name, author, pages, done)
-        self._num = str(num)
-
-    @property
-    def num(self):
-        return self._num
-
-    @num.setter
-    def num(self, val):
-        self._num = str(val).strip()
-
-    def get_info(self):
-        return f"Журнал | {self._name} ({self._num}) | {self._author} | {self._pages} стр."

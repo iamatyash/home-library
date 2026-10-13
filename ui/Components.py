@@ -1,5 +1,5 @@
 import flet as ft
-from constants import C_ORANGE, C_CYAN, C_GREEN, C_DARK, C_CARD, C_BORDER
+from util.Constants import C_ORANGE, C_CYAN, C_GREEN, C_DARK, C_CARD, C_BORDER
 
 
 class AppTitle(ft.Text):
