@@ -1,3 +1,3 @@
-from .BaseItem import BaseItem
+from .ProtoItem import ProtoItem
 from .Book import Book
 from .Journal import Journal

@@ -2,7 +2,7 @@ import flet as ft
 from util.Constants import C_ORANGE, C_CYAN, C_GREEN, C_DARK, C_BG
 from model.Book import Book
 from model.Journal import Journal
-from storage.MyMap import MyMap
+from storage.CustomMap import CustomMap
 from service.Session import Session
 from ui.Components import (
     AppTitle,
@@ -28,7 +28,7 @@ class App:
 
         self.types = ("Все", "Книга", "Журнал")
         self.authors = set()
-        self.stats = MyMap()
+        self.stats = CustomMap()
 
         self.items = [
             Book("Если все кошки в мире исчезнут", "Гэнки Кавамура", 224, "Фэнтези", True),

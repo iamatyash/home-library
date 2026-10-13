@@ -1,7 +1,7 @@
-from model.BaseItem import BaseItem
+from model.ProtoItem import ProtoItem
 
 
-class Book(BaseItem):
+class Book(ProtoItem):
     def __init__(self, name, author, pages, genre="Роман", done=False):
         super().__init__(name, author, pages, done)
         self._genre = str(genre)

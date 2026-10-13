@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
 
-class BaseItem(ABC):
+class ProtoItem(ABC):
     def __init__(self, name, author, pages, done=False):
         self._name = str(name)
         self._author = str(author)
@@ -52,7 +52,7 @@ class BaseItem(ABC):
             return False
 
     def __eq__(self, other):
-        if not isinstance(other, BaseItem):
+        if not isinstance(other, ProtoItem):
             return False
         return self._name == other._name and self._pages == other._pages
 
@@ -64,22 +64,22 @@ class BaseItem(ABC):
         return f"{self._name} | {self._author} ({self._pages} стр.) [{status}]"
 
     def __lt__(self, other):
-        if not isinstance(other, BaseItem):
+        if not isinstance(other, ProtoItem):
             return NotImplemented
         return self._pages < other._pages
 
     def __le__(self, other):
-        if not isinstance(other, BaseItem):
+        if not isinstance(other, ProtoItem):
             return NotImplemented
         return self._pages <= other._pages
 
     def __gt__(self, other):
-        if not isinstance(other, BaseItem):
+        if not isinstance(other, ProtoItem):
             return NotImplemented
         return self._pages > other._pages
 
     def __ge__(self, other):
-        if not isinstance(other, BaseItem):
+        if not isinstance(other, ProtoItem):
             return NotImplemented
         return self._pages >= other._pages
 
@@ -87,7 +87,7 @@ class BaseItem(ABC):
         return self._pages
 
     def __add__(self, other):
-        if isinstance(other, BaseItem):
+        if isinstance(other, ProtoItem):
             return self._pages + other._pages
         if isinstance(other, int):
             return self._pages + other

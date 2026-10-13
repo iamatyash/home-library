@@ -1,7 +1,7 @@
-from model.BaseItem import BaseItem
+from model.ProtoItem import ProtoItem
 
 
-class Journal(BaseItem):
+class Journal(ProtoItem):
     def __init__(self, name, author, pages, num="№1", done=False):
         super().__init__(name, author, pages, done)
         self._num = str(num)

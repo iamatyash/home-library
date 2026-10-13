@@ -1,1 +1,1 @@
-from .MyMap import MyMap
+from .CustomMap import CustomMap

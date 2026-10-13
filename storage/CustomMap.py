@@ -1,4 +1,4 @@
-class MyMap:
+class CustomMap:
     def __init__(self):
         self._keys = []
         self._vals = []
@@ -47,7 +47,7 @@ class MyMap:
 
     def __repr__(self):
         items_str = ", ".join(f"{k!r}: {v!r}" for k, v in zip(self._keys, self._vals))
-        return f"MyMap({{{items_str}}})"
+        return f"CustomMap({{{items_str}}})"
 
     def __str__(self):
         return self.__repr__()
