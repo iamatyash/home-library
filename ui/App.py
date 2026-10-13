@@ -68,12 +68,12 @@ class App:
         self.login_inp = InputField("Логин", 180, "UserName", self.on_login_change)
 
         self.type_drop = SelectDropdown("Тип", ("Книга", "Журнал"), "Книга")
-        self.name_inp = InputField("Название", 200)
-        self.author_inp = InputField("Автор", 160)
-        self.pages_inp = InputField("Страниц", 100, "300")
-        self.extra_inp = InputField("Жанр / Номер", 150, "Роман")
-        self.done_chk = StatusCheckbox("Прочитано", False)
+        self.name_inp = InputField("Название", 180)
+        self.author_inp = InputField("Автор", 150)
+        self.pages_inp = InputField("Страниц", 90, "300")
+        self.extra_inp = InputField("Жанр / Номер", 140, "Роман")
         self.add_btn = ActionButton("Добавить", self.add_item, bg=C_ORANGE, fg="#FFFFFF")
+        self.done_chk = StatusCheckbox("Прочитано", False)
 
         self.filter_drop = SelectDropdown("Фильтр", self.types, "Все", self.refresh)
         self.sort_btn = ActionButton("Сортировать по стр.", self.sort_items, bg=C_CYAN, fg="#1E293B")
@@ -85,8 +85,8 @@ class App:
         self.prog_bar = AppProgressBar(0)
 
         top_row = FlexRow([self.title_lbl, self.login_inp])
-        add_row1 = FlexRow([self.type_drop, self.name_inp, self.author_inp, self.pages_inp])
-        add_row2 = FlexRow([self.extra_inp, self.done_chk, self.add_btn])
+        add_row1 = FlexRow([self.type_drop, self.name_inp, self.author_inp, self.pages_inp, self.extra_inp])
+        add_row2 = FlexRow([self.add_btn, self.done_chk])
         ctrl_row = FlexRow([self.filter_drop, self.sort_btn, self.cmp_btn, self.info_lbl])
         bot_row = FlexRow([self.stats_lbl, self.prog_bar])
 
