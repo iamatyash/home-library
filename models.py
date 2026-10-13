@@ -3,8 +3,6 @@ from datetime import datetime
 
 
 class BaseItem(ABC):
-    """Абстрактный базовый класс для сущностей домашней библиотеки."""
-
     def __init__(self, name, author, pages, done=False):
         self._name = str(name)
         self._author = str(author)
@@ -45,18 +43,15 @@ class BaseItem(ABC):
 
     @abstractmethod
     def get_info(self):
-        """Возвращает форматированную строку с описанием объекта."""
         pass
 
     @staticmethod
     def check_pages(val):
-        """Проверка корректности введенного количества страниц."""
         try:
             return int(val) > 0
         except (ValueError, TypeError):
             return False
 
-    # Специальные методы: __eq__, __repr__, __str__ (по ТЗ)
     def __eq__(self, other):
         if not isinstance(other, BaseItem):
             return False
@@ -69,7 +64,6 @@ class BaseItem(ABC):
         status = "Прочитано" if self._done else "Не прочитано"
         return f"{self._name} — {self._author} ({self._pages} стр.) [{status}]"
 
-    # Сравнение объектов (по ТЗ: пользовательские классы должны быть сравнимы)
     def __lt__(self, other):
         if not isinstance(other, BaseItem):
             return NotImplemented
@@ -90,7 +84,6 @@ class BaseItem(ABC):
             return NotImplemented
         return self._pages >= other._pages
 
-    # Дополнительные специальные методы (не менее 3 по ТЗ)
     def __len__(self):
         return self._pages
 
@@ -109,8 +102,6 @@ class BaseItem(ABC):
 
 
 class Book(BaseItem):
-    """Класс книги."""
-
     def __init__(self, name, author, pages, genre="Роман", done=False):
         super().__init__(name, author, pages, done)
         self._genre = str(genre)
@@ -128,8 +119,6 @@ class Book(BaseItem):
 
 
 class Journal(BaseItem):
-    """Класс периодического издания / журнала."""
-
     def __init__(self, name, author, pages, num="№1", done=False):
         super().__init__(name, author, pages, done)
         self._num = str(num)
@@ -147,11 +136,6 @@ class Journal(BaseItem):
 
 
 class MyMap:
-    """
-    Кастомный класс для маппинга данных без использования стандартного dict.
-    Реализует хранение пар ключ-значение на двух списках.
-    """
-
     def __init__(self):
         self._keys = []
         self._vals = []
@@ -184,7 +168,6 @@ class MyMap:
             self._keys.pop(idx)
             self._vals.pop(idx)
 
-    # Специальные методы
     def __getitem__(self, key):
         if key in self._keys:
             return self.get(key)
@@ -208,8 +191,6 @@ class MyMap:
 
 
 class Session:
-    """Класс сессии пользователя для формирования итогового отчета."""
-
     DATETIME_FORMAT = "%d.%m.%Y %H:%M:%S"
 
     def __init__(self, login="UserName"):
@@ -249,12 +230,11 @@ class Session:
         return f"{self._login}: {self._time_in} - {self._time_out}"
 
     def save(self, filename="report.txt"):
-        """Формирует отчет в заданном табличном формате и сохраняет в файл."""
         self._time_out = self.now_formatted()
         line = "+------------------------------------------------------+"
         head = f"| {'login':<10}| {'time_in':<20}| {'time_out':<20}|"
-        sep  = "|-----------|---------------------|---------------------|"
-        row  = f"| {self._login:<10}| {self._time_in:<20}| {self._time_out:<20}|"
+        sep = "|-----------|---------------------|---------------------|"
+        row = f"| {self._login:<10}| {self._time_in:<20}| {self._time_out:<20}|"
         text = "\n".join([line, head, sep, row, line]) + "\n"
         with open(filename, "w", encoding="utf-8") as f:
             f.write(text)

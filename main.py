@@ -1,15 +1,6 @@
-"""
-Приложение «Домашняя библиотека» на Flet.
-Учебный проект для зачета по ООП.
-"""
-
 import flet as ft
 from models import Book, Journal, MyMap, Session
 
-
-# =====================================================================
-# Пользовательские UI-компоненты (требование: переопределить >= 10 компонентов окна)
-# =====================================================================
 
 class AppTitle(ft.Text):
     def __init__(self, text):
@@ -82,10 +73,6 @@ class AppDivider(ft.Divider):
         super().__init__(height=1, color="#2E2E2E")
 
 
-# =====================================================================
-# Основной класс приложения
-# =====================================================================
-
 class App:
     current = None
 
@@ -93,12 +80,10 @@ class App:
         self.page = page
         self.session = Session("UserName")
 
-        # Коллекции по ТЗ (tuple, set, list, кастомный маппинг)
-        self.types = ("Все", "Книга", "Журнал")  # tuple
-        self.authors = set()                     # set
-        self.stats = MyMap()                     # кастомный класс вместо dict
+        self.types = ("Все", "Книга", "Журнал")
+        self.authors = set()
+        self.stats = MyMap()
 
-        # Начальный список объектов (требование: не менее 10 объектов)
         self.items = [
             Book("Мастер и Маргарита", "Булгаков", 480, "Роман", True),
             Book("Преступление и наказание", "Достоевский", 608, "Классика", True),
@@ -117,7 +102,6 @@ class App:
         self.refresh()
 
     def setup_window(self):
-        """Настройка параметров окна приложения."""
         self.page.title = "Домашняя библиотека"
         self.page.theme_mode = ft.ThemeMode.DARK
         self.page.bgcolor = "#121212"
@@ -134,7 +118,6 @@ class App:
         self.page.window.on_event = self.on_win_event
 
     def build_ui(self):
-        """Инициализация и размещение элементов интерфейса."""
         self.title_lbl = AppTitle("Домашняя библиотека")
         self.login_inp = InputField("Логин", 180, "UserName", self.on_login_change)
 
@@ -172,11 +155,9 @@ class App:
         )
 
     def on_login_change(self, e):
-        """Обновление логина активной сессии."""
         self.session.login = self.login_inp.value
 
     def add_item(self, e):
-        """Добавление нового элемента библиотеки."""
         name = self.name_inp.value.strip()
         author = self.author_inp.value.strip()
         pages_str = self.pages_inp.value.strip()
@@ -200,12 +181,10 @@ class App:
         self.refresh()
 
     def sort_items(self, e):
-        """Сортировка списка элементов (используется __lt__)."""
         self.items.sort()
         self.refresh()
 
     def compare_items(self, e):
-        """Сравнение первых двух элементов списка (демонстрация __eq__, __lt__, __add__, __len__)."""
         if len(self.items) < 2:
             self.info_lbl.value = "Нужно минимум 2 объекта для сравнения"
         else:
@@ -217,20 +196,17 @@ class App:
         self.page.update()
 
     def toggle_item(self, e):
-        """Переключение статуса прочтения."""
         item = e.control.data
         item.done = e.control.value
         self.refresh()
 
     def delete_item(self, e):
-        """Удаление элемента из коллекции."""
         item = e.control.data
         if item in self.items:
             self.items.remove(item)
             self.refresh()
 
     def refresh(self, e=None):
-        """Фильтрация, расчет статистики и обновление отображения."""
         self.list_col.controls.clear()
         self.authors = {x.author for x in self.items}
 
@@ -251,7 +227,6 @@ class App:
         done_cnt = sum(1 for x in self.items if bool(x))
         pages_sum = sum(len(x) for x in self.items)
 
-        # Сохранение агрегатов в кастомный маппинг MyMap
         self.stats.put("total", total)
         self.stats.put("done", done_cnt)
         self.stats.put("pages", pages_sum)
@@ -266,12 +241,10 @@ class App:
         self.page.update()
 
     def save_report(self):
-        """Сохранение отчета сессии в файл report.txt по ТЗ."""
         self.session.login = self.login_inp.value
         self.session.save("report.txt")
 
     def on_win_event(self, e):
-        """Обработка системных событий окна (сохранение при закрытии)."""
         if "close" in str(e.data).lower() or "close" in str(getattr(e, "type", "")).lower():
             self.save_report()
 
