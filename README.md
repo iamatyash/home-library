@@ -2,12 +2,8 @@
 
 Домашняя библиотека
 
-<img width="1190" height="1111" alt="{2CE30AD2-702A-474B-8E9A-4C3F0FA98B9C}" src="https://github.com/user-attachments/assets/2238582c-dcf6-44f2-9c1a-157755e029d5" />
-<img width="1182" height="419" alt="{4C7D7C4B-29EE-4813-9510-B0D429C305DF}" src="https://github.com/user-attachments/assets/93780978-363d-4ef5-8939-83d9c08281f1" />
-
-
-
-
+<img width="1010" height="1086" alt="{D600D1D9-6595-4892-B0BA-298269DC6D29}" src="https://github.com/user-attachments/assets/c5196c4c-8b03-4967-bde8-ab2e837ffd0f" />
+<img width="1174" height="267" alt="{25AE2574-BE89-4A5A-8BC9-70C3655E93D7}" src="https://github.com/user-attachments/assets/bb50cb39-a6a9-4da8-879f-ee6b59767159" />
 
 ## Запуск
 
